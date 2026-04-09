@@ -8,14 +8,10 @@
         :root { --gold: #d4af37; --dark: #0b0c0d; --surface: #1a1c1e; }
         body { font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f0f2f5; margin: 0; }
         
-        .login-container { background: white; padding: 2.5rem; border-radius: 12px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); width: 340px; text-align: center; border-top: 5px solid var(--gold); }
+        .login-container { background: white; padding: 3rem 2.5rem; border-radius: 12px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); width: 340px; text-align: center; border-top: 5px solid var(--gold); }
         
-        /* CSS Nexus Logo */
-        .logo-box { width: 60px; height: 60px; background: var(--dark); margin: 0 auto 20px; border-radius: 12px; display: flex; align-items: center; justify-content: center; border: 2px solid var(--gold); box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
-        .logo-text { color: var(--gold); font-size: 2rem; font-weight: bold; font-family: serif; }
-        
-        .brand-header h1 { font-size: 1.4rem; color: var(--dark); margin: 0; letter-spacing: 2px; }
-        .brand-header p { font-size: 0.65rem; color: var(--gold); text-transform: uppercase; margin-bottom: 25px; letter-spacing: 1px; font-weight: bold; }
+        .brand-header h1 { font-size: 1.6rem; color: var(--dark); margin: 0; letter-spacing: 3px; font-weight: 800; }
+        .brand-header p { font-size: 0.7rem; color: var(--gold); text-transform: uppercase; margin: 5px 0 30px 0; letter-spacing: 2px; font-weight: bold; }
         
         input { width: 100%; padding: 14px; margin: 10px 0; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; font-size: 1rem; transition: 0.3s; background: #fafafa; }
         input:focus { border-color: var(--gold); outline: none; background: white; }
@@ -23,22 +19,20 @@
         button.login-btn { width: 100%; padding: 15px; background-color: var(--dark); color: var(--gold); border: 1px solid var(--gold); border-radius: 6px; cursor: pointer; font-size: 0.9rem; font-weight: bold; margin-top: 15px; transition: 0.3s; letter-spacing: 1px; }
         button.login-btn:hover { background-color: var(--gold); color: var(--dark); }
         
-        /* Spinner */
-        .loading-area { display: none; margin-top: 20px; }
-        .spinner { width: 25px; height: 25px; border: 3px solid #f3f3f3; border-top: 3px solid var(--gold); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 10px; }
+        /* Spinner & Message Area */
+        .loading-area { display: none; margin-top: 25px; }
+        .spinner { width: 25px; height: 25px; border: 3px solid #f3f3f3; border-top: 3px solid var(--gold); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 15px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         
-        #message { font-size: 0.8rem; font-weight: 500; min-height: 20px; color: #666; }
+        #message { font-size: 0.85rem; font-weight: 500; min-height: 20px; color: #666; margin: 0; }
     </style>
 </head>
 <body>
 
 <div class="login-container">
-    <div class="logo-box"><span class="logo-text">N</span></div>
-    
     <div class="brand-header">
-        <h1>NEXUS PREMIER</h1>
-        <p>Private Wealth Access</p>
+        <h1>NEXUS</h1>
+        <p>Premier Private Banking</p>
     </div>
     
     <form id="loginForm">
@@ -64,7 +58,7 @@
         const btn = document.getElementById('loginBtn');
 
         if (u === "hyun56" && p === "Hyun#1590") {
-            // Success Path
+            // Processing State
             btn.style.display = "none";
             area.style.display = "block";
             
@@ -78,7 +72,7 @@
             }, 4000); // 4 Second processing delay
 
         } else {
-            // Failure Path
+            // Error State
             area.style.display = "block";
             document.querySelector('.spinner').style.display = "none";
             msg.textContent = "Access Denied: Invalid Credentials";
@@ -88,7 +82,7 @@
                 area.style.display = "none";
                 document.querySelector('.spinner').style.display = "block";
                 btn.style.display = "block";
-            }, 2000);
+            }, 2500);
         }
     });
 </script>
