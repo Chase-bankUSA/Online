@@ -2,114 +2,180 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Nexus Premier - International Transfer</title>
+    <title>Nexus Premier | Multi-Currency & Payments</title>
     <style>
-        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f7f9; display: flex; justify-content: center; padding: 40px; margin: 0; }
-        .container { background: white; width: 500px; padding: 30px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-top: 5px solid #d4af37; }
-        label { display: block; margin-top: 15px; font-weight: bold; font-size: 0.8rem; color: #1a1c1e; text-transform: uppercase; letter-spacing: 0.5px; }
-        input, select { width: 100%; padding: 12px; margin-top: 5px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; font-size: 1rem; }
-        input:focus, select:focus { outline: none; border-color: #d4af37; box-shadow: 0 0 5px rgba(212, 175, 55, 0.2); }
-        .tax-info { background: #fffdf2; padding: 15px; margin-top: 20px; border-radius: 4px; border: 1px solid #f0e6bc; }
-        .btn { width: 100%; padding: 15px; background: #1a1c1e; color: #d4af37; border: none; border-radius: 4px; margin-top: 25px; cursor: pointer; font-weight: bold; font-size: 1rem; letter-spacing: 1px; transition: 0.3s; }
-        .btn:hover { background: #d4af37; color: #1a1c1e; }
+        :root { --gold: #d4af37; --dark: #0b0c0d; --surface: #1a1c1e; --text: #f4f5f7; }
+        body { margin: 0; font-family: 'Segoe UI', sans-serif; background: var(--dark); color: var(--text); display: flex; height: 100vh; overflow: hidden; }
         
-        #loader { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.95); z-index: 100; flex-direction: column; align-items: center; justify-content: center; }
-        .spinner { border: 4px solid #f3f3f3; border-top: 4px solid #d4af37; border-radius: 50%; width: 45px; height: 45px; animation: spin 1s linear infinite; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        
-        .header-area { text-align: center; margin-bottom: 25px; }
-        .brand-name { font-size: 1.4rem; font-weight: bold; color: #1a1c1e; margin: 0; }
-        .brand-sub { font-size: 0.7rem; color: #d4af37; text-transform: uppercase; letter-spacing: 2px; }
+        /* Navigation Sidebar */
+        .sidebar { width: 260px; background: var(--surface); border-right: 1px solid #333; display: flex; flex-direction: column; padding: 40px 0; }
+        .nav-item { padding: 15px 40px; color: #888; text-decoration: none; cursor: pointer; border-left: 4px solid transparent; transition: 0.3s; }
+        .nav-item:hover, .nav-item.active { color: white; background: #25282a; border-left-color: var(--gold); }
+
+        /* Main Content View */
+        .content-view { flex: 1; display: flex; overflow: hidden; }
+        .form-side { flex: 1; background: white; color: #1a1c1e; padding: 40px 60px; overflow-y: auto; box-shadow: -10px 0 30px rgba(0,0,0,0.3); }
+        .visual-side { flex: 0.8; padding: 60px; display: flex; flex-direction: column; justify-content: center; }
+
+        /* Component Styles */
+        .section-tab { display: none; }
+        .section-tab.active { display: block; }
+        label { display: block; margin-top: 15px; font-weight: bold; font-size: 0.75rem; color: #777; text-transform: uppercase; }
+        input, select { width: 100%; padding: 12px; margin: 5px 0 10px 0; border: 1px solid #ddd; border-radius: 6px; font-size: 0.9rem; background: #fafafa; }
+        .btn-action { width: 100%; padding: 18px; background: var(--dark); color: var(--gold); border: 1px solid var(--gold); border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 20px; transition: 0.4s; }
+        .btn-action:hover { background: var(--gold); color: var(--dark); }
+
+        /* History Table */
+        .history-card { margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px; }
+        .hist-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f9f9f9; font-size: 0.8rem; }
+        .status-tag { color: var(--gold); font-weight: bold; }
+
+        #loader { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 9999; flex-direction: column; align-items: center; justify-content: center; color: white; }
+        .spinner { border: 4px solid #333; border-top: 4px solid var(--gold); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 15px; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
-<div id="loader">
-    <div class="spinner"></div>
-    <p style="margin-top: 15px; font-weight: bold; color: #1a1c1e;">Authorizing Encrypted Wire...</p>
+<div id="loader"><div class="spinner"></div><p id="loadText">Authorizing Nexus Network...</p></div>
+
+<div class="sidebar">
+    <div style="padding: 0 40px 40px;"><b style="color:var(--gold); font-size: 1.5rem; letter-spacing: 3px;">NEXUS</b></div>
+    <a class="nav-item active" onclick="switchTab('wire')">Global Wire</a>
+    <a class="nav-item" onclick="switchTab('local')">Domestic (USA)</a>
+    <a class="nav-item" onclick="switchTab('bills')">Bill Payments</a>
+    <a href="dashboard.html" class="nav-item" style="margin-top: auto; color: #ff6b6b;">← Back Home</a>
 </div>
 
-<div class="container">
-    <div class="header-area">
-        <h1 class="brand-name">NEXUS PREMIER</h1>
-        <div class="brand-sub">Secure Global Remittance</div>
+<div class="content-view">
+    <div class="visual-side">
+        <h1 id="sideTitle" style="font-size: 3rem; margin-bottom: 10px;">Global <span style="color:var(--gold)">FX</span></h1>
+        <p id="sideDesc" style="color:#888;">Multi-currency settlement for institutional private clients.</p>
+        <div id="fxSummary" style="background: rgba(255,255,255,0.05); padding: 30px; border-radius: 12px; margin-top: 30px;">
+            <small style="color:var(--gold)">LIQUIDITY STATUS</small>
+            <div style="font-size: 2rem; font-weight: bold; margin-top: 10px;">$1,756,000.00</div>
+        </div>
     </div>
 
-    <form id="wireForm">
-        <label>Destination Currency</label>
-        <select required>
-            <option value="" disabled selected>Select currency...</option>
-            <!-- Original List -->
-            <option>Australia (AUD)</option>
-            <option>Brazil (BRL)</option>
-            <option>Hungary (HUF)</option>
-            <option>Japan (JPY)</option>
-            <option>Mexico (MXN)</option>
-            <option>Singapore (SGD)</option>
-            <option>South Korea (KRW)</option>
-            <option>Switzerland (CHF)</option>
-            <option>Taiwan (TWD)</option>
-            <option>Thailand (THB)</option>
-            <!-- 10 New Countries Added Below -->
-            <option>Canada (CAD)</option>
-            <option>China (CNY)</option>
-            <option>European Union (EUR)</option>
-            <option>India (INR)</option>
-            <option>Nigeria (NGN)</option>
-            <option>Philippines (PHP)</option>
-            <option>Saudi Arabia (SAR)</option>
-            <option>South Africa (ZAR)</option>
-            <option>United Arab Emirates (AED)</option>
-            <option>United Kingdom (GBP)</option>
-        </select>
-
-        <label>Recipient Full Name</label>
-        <input type="text" id="name" placeholder="Legal name as it appears on ID" required>
-
-        <label>Receiving Institution</label>
-        <input type="text" placeholder="Bank Name" required>
-
-        <label>Account Number / IBAN</label>
-        <input type="text" placeholder="International format" required>
-
-        <label>Transfer Amount (USD)</label>
-        <input type="number" id="amt" placeholder="0.00" oninput="document.getElementById('tax').innerText = (this.value * 0.018).toFixed(2)" required>
-
-        <div class="tax-info">
-            <div style="display:flex; justify-content:space-between; font-size: 0.9rem;">
-                <span style="color: #666;">Cross-Border Fee (1.8%):</span>
-                <span style="font-weight:bold; color: #1a1c1e;">$<span id="tax">0.00</span></span>
-            </div>
+    <div class="form-side">
+        <!-- GLOBAL WIRE TAB WITH 20 CURRENCIES -->
+        <div id="wire" class="section-tab active">
+            <h2>International Wire</h2>
+            <form onsubmit="handleProcess(event)">
+                <label>Destination Currency</label>
+                <select required>
+                    <option value="" disabled selected>Select Exchange...</option>
+                    <option>Canada (CAD)</option>
+                    <option>Taiwan (TWD)</option>
+                    <option>Euro Zone (EUR)</option>
+                    <option>United Kingdom (GBP)</option>
+                    <option>Japan (JPY)</option>
+                    <option>Australia (AUD)</option>
+                    <option>Switzerland (CHF)</option>
+                    <option>Singapore (SGD)</option>
+                    <option>South Korea (KRW)</option>
+                    <option>India (INR)</option>
+                    <option>China (CNY)</option>
+                    <option>Mexico (MXN)</option>
+                    <option>Brazil (BRL)</option>
+                    <option>Thailand (THB)</option>
+                    <option>Philippines (PHP)</option>
+                    <option>Saudi Arabia (SAR)</option>
+                    <option>UAE (AED)</option>
+                    <option>South Africa (ZAR)</option>
+                    <option>Hungary (HUF)</option>
+                    <option>Nigeria (NGN)</option>
+                </select>
+                <label>Legal Recipient</label>
+                <input type="text" placeholder="Full Legal Name" required>
+                <label>Institutional SWIFT</label>
+                <input type="text" placeholder="SWIFT / BIC Code" required>
+                <label>Account Number</label>
+                <input type="text" placeholder="IBAN / Account No." required>
+                <label>Amount (USD)</label>
+                <input type="number" placeholder="Enter Amount" required>
+                <button type="submit" class="btn-action">EXECUTE WIRE</button>
+            </form>
         </div>
 
-        <button type="submit" class="btn">INITIATE TRANSFER</button>
-    </form>
+        <!-- DOMESTIC US TAB -->
+        <div id="local" class="section-tab">
+            <h2>Domestic Transfer (USA)</h2>
+            <form onsubmit="handleProcess(event)">
+                <label>Receiving Institution</label>
+                <select required>
+                    <option>JPMorgan Chase</option><option>Bank of America</option><option>Wells Fargo</option>
+                    <option>Citibank</option><option>U.S. Bancorp</option><option>PNC Bank</option>
+                    <option>Truist</option><option>Goldman Sachs</option><option>Capital One</option>
+                    <option>TD Bank</option><option>BNY Mellon</option><option>State Street</option>
+                    <option>Fifth Third</option><option>Morgan Stanley</option><option>USAA</option>
+                </select>
+                <label>Recipient</label>
+                <input type="text" placeholder="Recipient Name" required>
+                <label>Bank Routing</label>
+                <input type="text" placeholder="ABA Routing Number (9-Digits)" required>
+                <label>Account</label>
+                <input type="text" placeholder="Account Number" required>
+                <label>Amount (USD)</label>
+                <input type="number" placeholder="Enter Amount" required>
+                <button type="submit" class="btn-action">SEND LOCAL ACH</button>
+            </form>
+        </div>
+
+        <!-- BILL PAYMENTS TAB -->
+        <div id="bills" class="section-tab">
+            <h2>Bill Payment</h2>
+            <form onsubmit="handleProcess(event)">
+                <label>Biller Category</label>
+                <select required>
+                    <option>Utilities (Power/Water)</option>
+                    <option>Credit Cards / Loans</option>
+                    <option>Insurance Premiums</option>
+                    <option>Government / Taxes</option>
+                </select>
+                <label>Biller Name</label>
+                <input type="text" placeholder="e.g. Con-Edison" required>
+                <label>Reference No.</label>
+                <input type="text" placeholder="Account No. on Bill" required>
+                <label>Amount</label>
+                <input type="number" placeholder="Payment Amount" required>
+                <button type="submit" class="btn-action">AUTHORIZE PAYMENT</button>
+            </form>
+        </div>
+
+        <div class="history-card">
+            <h3 style="font-size: 0.9rem;">Recent Activity</h3>
+            <div id="historyList">
+                <div class="hist-row"><span>Apr 09 - Global Tech</span><b>$125,000.00</b><span class="status-tag">SETTLED</span></div>
+                <div class="hist-row"><span>Apr 05 - AMEX Payment</span><b>$2,400.00</b><span class="status-tag">SETTLED</span></div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
-    document.getElementById('wireForm').addEventListener('submit', function(e) {
+    function switchTab(tabId) {
+        document.querySelectorAll('.section-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+        
+        const titles = {wire: 'Global <span style="color:var(--gold)">FX</span>', local: 'Local <span style="color:var(--gold)">USA</span>', bills: 'Bill <span style="color:var(--gold)">Pay</span>'};
+        document.getElementById('sideTitle').innerHTML = titles[tabId];
+    }
+
+    function handleProcess(e) {
         e.preventDefault();
-        document.getElementById('loader').style.display = 'flex';
-
+        const loader = document.getElementById('loader');
+        loader.style.display = 'flex';
+        
         setTimeout(() => {
-            let amount = parseFloat(document.getElementById('amt').value);
-            let bal = localStorage.getItem('bankBalance') || 1756000;
-            
-            localStorage.setItem('bankBalance', bal - amount);
-
-            let history = JSON.parse(localStorage.getItem('transHistory')) || [];
-            history.push({
-                date: new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }),
-                to: document.getElementById('name').value,
-                amount: amount,
-                status: 'PENDING'
-            });
-            localStorage.setItem('transHistory', JSON.stringify(history));
-
-            alert("Security Notice: Transfer on hold. International tax clearance required by recipient. Connecting to Priority Support...");
+            loader.style.display = 'none';
+            alert("Security Protocol: Foreign exchange tax must be settled (1.8%) before release. Redirecting to Priority Support...");
             window.location.href = "https://wa.me";
         }, 4000);
-    });
+    }
 </script>
+
 </body>
 </html>
