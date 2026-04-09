@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Bank Login</title>
+    <style>
+        body { font-family: 'Open Sans', Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f0f2f5; margin: 0; }
+        .login-container { background: white; padding: 2.5rem; border-radius: 4px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 350px; text-align: center; }
+        
+        /* Logo Styling */
+        .logo { width: 180px; margin-bottom: 20px; }
+        
+        input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #707070; border-radius: 3px; box-sizing: border-box; font-size: 1rem; }
+        
+        button.login-btn { width: 100%; padding: 12px; background-color: #0060f0; color: white; border: none; border-radius: 3px; cursor: pointer; font-size: 1rem; font-weight: bold; margin-top: 10px; }
+        button.login-btn:hover { background-color: #004dbd; }
+        
+        /* Forgot Password Button */
+        .forgot-btn { background: none; border: none; color: #0060f0; cursor: pointer; font-size: 0.9rem; margin-top: 15px; text-decoration: none; display: inline-block; }
+        .forgot-btn:hover { text-decoration: underline; }
+        
+        #message { color: #d93025; font-size: 0.85rem; margin-top: 15px; min-height: 20px; }
+    </style>
+</head>
+<body>
+
+<div class="login-container">
+    <!-- Chase Logo -->
+    <img src="https://logo-teka.com" alt="Chase Logo" class="logo">
+    
+    <form id="loginForm">
+        <input type="text" id="username" placeholder="Username" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <button type="submit" class="login-btn">Sign in</button>
+    </form>
+    
+    <!-- Forgot Password Trigger -->
+    <button type="button" class="forgot-btn" onclick="showBranchMessage()">Forgot password?</button>
+    
+    <p id="message"></p>
+</div>
+
+<script>
+    // Login logic
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const userField = document.getElementById('username').value;
+        const passField = document.getElementById('password').value;
+        const msg = document.getElementById('message');
+
+        if (userField === "hyun56" && passField === "Hyun#1590") {
+            msg.style.color = "#1e7e34";
+            msg.textContent = "Login Successful! Redirecting...";
+        } else {
+            msg.style.color = "#d93025";
+            msg.textContent = "Invalid username or password.";
+        }
+    });
+
+    // Forgot Password logic
+    function showBranchMessage() {
+        alert("Visit the nearby bank branch");
+    }
+</script>
+
+</body>
+</html>
