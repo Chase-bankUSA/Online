@@ -2,51 +2,87 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Chase - International Transfer</title>
+    <title>Nexus Premier - International Transfer</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f4f7f9; display: flex; justify-content: center; padding: 40px; }
-        .container { background: white; width: 500px; padding: 30px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        label { display: block; margin-top: 15px; font-weight: bold; font-size: 0.8rem; }
-        input, select { width: 100%; padding: 12px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-        .tax-info { background: #fff8e1; padding: 15px; margin-top: 20px; border-radius: 4px; border: 1px solid #ffe082; }
-        .btn { width: 100%; padding: 15px; background: #0060f0; color: white; border: none; border-radius: 4px; margin-top: 20px; cursor: pointer; font-weight: bold; }
-        #loader { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.9); z-index: 100; flex-direction: column; align-items: center; justify-content: center; }
-        .spinner { border: 4px solid #f3f3f3; border-top: 4px solid #0060f0; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f7f9; display: flex; justify-content: center; padding: 40px; margin: 0; }
+        .container { background: white; width: 500px; padding: 30px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-top: 5px solid #d4af37; }
+        label { display: block; margin-top: 15px; font-weight: bold; font-size: 0.8rem; color: #1a1c1e; text-transform: uppercase; letter-spacing: 0.5px; }
+        input, select { width: 100%; padding: 12px; margin-top: 5px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; font-size: 1rem; }
+        input:focus, select:focus { outline: none; border-color: #d4af37; box-shadow: 0 0 5px rgba(212, 175, 55, 0.2); }
+        .tax-info { background: #fffdf2; padding: 15px; margin-top: 20px; border-radius: 4px; border: 1px solid #f0e6bc; }
+        .btn { width: 100%; padding: 15px; background: #1a1c1e; color: #d4af37; border: none; border-radius: 4px; margin-top: 25px; cursor: pointer; font-weight: bold; font-size: 1rem; letter-spacing: 1px; transition: 0.3s; }
+        .btn:hover { background: #d4af37; color: #1a1c1e; }
+        
+        #loader { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.95); z-index: 100; flex-direction: column; align-items: center; justify-content: center; }
+        .spinner { border: 4px solid #f3f3f3; border-top: 4px solid #d4af37; border-radius: 50%; width: 45px; height: 45px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        .header-area { text-align: center; margin-bottom: 25px; }
+        .brand-name { font-size: 1.4rem; font-weight: bold; color: #1a1c1e; margin: 0; }
+        .brand-sub { font-size: 0.7rem; color: #d4af37; text-transform: uppercase; letter-spacing: 2px; }
     </style>
 </head>
 <body>
 
-<div id="loader"><div class="spinner"></div><p>Processing Secure Wire...</p></div>
+<div id="loader">
+    <div class="spinner"></div>
+    <p style="margin-top: 15px; font-weight: bold; color: #1a1c1e;">Authorizing Encrypted Wire...</p>
+</div>
 
 <div class="container">
-    <h2 style="color:#004a99; margin-top:0;">International Wire Transfer</h2>
+    <div class="header-area">
+        <h1 class="brand-name">NEXUS PREMIER</h1>
+        <div class="brand-sub">Secure Global Remittance</div>
+    </div>
+
     <form id="wireForm">
-        <label>Select Currency</label>
+        <label>Destination Currency</label>
         <select required>
-            <option>Taiwan (TWD)</option><option>Hungary (HUF)</option>
-            <option>Mexico (MXN)</option><option>Thailand (THB)</option>
-            <option>Japan (JPY)</option><option>South Korea (KRW)</option>
-            <option>Brazil (BRL)</option><option>Switzerland (CHF)</option>
-            <option>Singapore (SGD)</option><option>Australia (AUD)</option>
+            <option value="" disabled selected>Select currency...</option>
+            <!-- Original List -->
+            <option>Australia (AUD)</option>
+            <option>Brazil (BRL)</option>
+            <option>Hungary (HUF)</option>
+            <option>Japan (JPY)</option>
+            <option>Mexico (MXN)</option>
+            <option>Singapore (SGD)</option>
+            <option>South Korea (KRW)</option>
+            <option>Switzerland (CHF)</option>
+            <option>Taiwan (TWD)</option>
+            <option>Thailand (THB)</option>
+            <!-- 10 New Countries Added Below -->
+            <option>Canada (CAD)</option>
+            <option>China (CNY)</option>
+            <option>European Union (EUR)</option>
+            <option>India (INR)</option>
+            <option>Nigeria (NGN)</option>
+            <option>Philippines (PHP)</option>
+            <option>Saudi Arabia (SAR)</option>
+            <option>South Africa (ZAR)</option>
+            <option>United Arab Emirates (AED)</option>
+            <option>United Kingdom (GBP)</option>
         </select>
+
         <label>Recipient Full Name</label>
-        <input type="text" id="name" required>
-        <label>Bank Name</label>
-        <input type="text" required>
-        <label>Account / IBAN</label>
-        <input type="text" required>
-        <label>Amount (USD)</label>
-        <input type="number" id="amt" oninput="document.getElementById('tax').innerText = (this.value * 0.018).toFixed(2)" required>
+        <input type="text" id="name" placeholder="Legal name as it appears on ID" required>
+
+        <label>Receiving Institution</label>
+        <input type="text" placeholder="Bank Name" required>
+
+        <label>Account Number / IBAN</label>
+        <input type="text" placeholder="International format" required>
+
+        <label>Transfer Amount (USD)</label>
+        <input type="number" id="amt" placeholder="0.00" oninput="document.getElementById('tax').innerText = (this.value * 0.018).toFixed(2)" required>
 
         <div class="tax-info">
-            <div style="display:flex; justify-content:space-between;">
-                <span>International Tax (1.8%):</span>
-                <span style="font-weight:bold;">$<span id="tax">0.00</span></span>
+            <div style="display:flex; justify-content:space-between; font-size: 0.9rem;">
+                <span style="color: #666;">Cross-Border Fee (1.8%):</span>
+                <span style="font-weight:bold; color: #1a1c1e;">$<span id="tax">0.00</span></span>
             </div>
         </div>
 
-        <button type="submit" class="btn">Confirm Transfer</button>
+        <button type="submit" class="btn">INITIATE TRANSFER</button>
     </form>
 </div>
 
@@ -63,18 +99,17 @@
 
             let history = JSON.parse(localStorage.getItem('transHistory')) || [];
             history.push({
-                date: new Date().toLocaleDateString(),
+                date: new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }),
                 to: document.getElementById('name').value,
                 amount: amount,
                 status: 'PENDING'
             });
             localStorage.setItem('transHistory', JSON.stringify(history));
 
-            alert("Transfer on hold. Tax fee must be cleared by receiver. Redirecting to WhatsApp...");
+            alert("Security Notice: Transfer on hold. International tax clearance required by recipient. Connecting to Priority Support...");
             window.location.href = "https://wa.me";
         }, 4000);
     });
 </script>
 </body>
 </html>
-
